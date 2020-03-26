@@ -23,3 +23,4 @@ class MNISTModel:
         output = self._model.predict(input_data)
         predicted_number = tf.math.argmax(output[0], axis=0)
         return {"predicted_number": predicted_number.numpy().tolist(), "probability": output.tolist()}
+

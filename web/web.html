@@ -1,0 +1,37 @@
+<form id="mnistform">
+  <label>Image URL:</label>
+  <input type="text" name="data[input]" id="datainput"><br><br>
+  <input type="hidden" name="data[type]" id="datatype" value="url">
+  <input type="button" value="Predict" onclick="predict()">
+</form>
+<br>
+
+<p>
+Image: <br> <img src="#" id="inputimg" style="display:none">
+<br>
+<br>
+Predicted Number: <br> <label id="predictednumber"></label>
+</p>
+
+<script src="jquery-3.4.1.min.js"></script>
+<script type='text/javascript'>
+function predict() {
+    $('#inputimg').attr('src', $('#datainput').val());
+    $('#inputimg').show();
+    $.ajax({
+        url: "http://localhost:5000/api/v1.0/predictions",
+        data: JSON.stringify({"data": {"input": $('#datainput').val(), "type": $('#datatype').val()}}),
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function(returnData){
+            $('#predictednumber').text(returnData['predicted_number']);
+            console.log(returnData);
+        },
+        error: function(xhr, ajaxOptions, thrownError){
+            console.log(xhr.status);
+            console.log(thrownError);
+        }
+    });
+}
+</script>
